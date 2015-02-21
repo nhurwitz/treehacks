@@ -1,15 +1,56 @@
-import tweepy
+import pprint
+from pygoogle import pygoogle
+pp = pprint.PrettyPrinter(indent=4)
 
-consumer_key = 'kaDVPs7HmACwAB6Cl2e4ToYKh'
-consumer_secret = 'FG3PdKs1vTh9EuULZgU0rnQ7wUjdRVFrmQkdsZbxo56qaB102w'
-access_token = '1387935236-JPAIQV68pNrBuhZe74rjy19akV7ZBB7FRi9lMTX'
-access_token_secret = 'MVKk8OZMua09usC42AlY90pMEn6BX9BmQA9XWoEcSwHXM'
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
+# aclhemy api
+from alchemyapi.alchemyapi import AlchemyAPI
+alchemyapi = AlchemyAPI()
 
-api = tweepy.API(auth)
+def parse(query):
+    g = pygoogle('%s speech full text' % query)
+    g.pages = 1
 
-public_tweets = api.home_timeline()
-for tweet in public_tweets:
-    print tweet.text
+    keywords = []
+    for link in g.get_urls():
+        response = alchemyapi.keywords('url', link, {'sentiment': 1})
+
+        if response['status'] == 'OK':
+            for keyword in response['keywords']:
+                try:
+                    keywords.append((float(keyword['sentiment']['score']), keyword['text']))
+                except:
+                    pass
+        else:
+            print('Error in keyword extraction call: ', response['statusInfo'])
+
+
+    keywords.sort()
+
+    negative_kws = keywords[:20]
+    positive_kws = keywords[-20:]
+
+    return negative_kws, positive_kws
+
+print 'Netanyahu'
+print '========='
+print 'negative'
+print '---------'
+n,p = parse('netanyahu')
+for kw in n: print kw
+print 'positive'
+print '---------'
+for kw in p: print kw
+
+print ''
+print ''
+
+print 'Abbas'
+print '========='
+print 'negative'
+print '---------'
+n,p = parse('abbas')
+for kw in n: print kw
+print 'positive'
+print '---------'
+for kw in p: print kw
