@@ -1,14 +1,6 @@
-<head>
-  <title>treehacks</title>
-</head>
-
-<body>
+<template name="home">
   <h1>Welcome to Meteor!</h1>
 
-  {{> hello}}
-</body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+  <a href="{{pathFor 'poll'}}" class="js-add-course btn-primary">Go to Poll</a>
 </template>
+
