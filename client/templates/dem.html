@@ -1,9 +1,17 @@
 <template name = "dem">
   <div id="container">
     <div id="content-container">
-      <h1> LOLOLOL </h1>  
+      <div class="dem-header">
+        Demographics
+      </div>
       <div class="content-scrollable">
-        <form>
+        {{#autoForm id="demForm" schema=Schemas.Demographics}}
+          {{> afFormGroup name="language" options=langOptions}}
+          {{> afFormGroup name="age"}}
+          {{> afFormGroup name="gender" options="genderOptions"}}
+          <button type="submit" class="btn btn-primary">Submit</button>
+        {{/autoForm}}
+        <!-- <form>
             {{#if errorMessages}}
               <div class="list-errors">
                 {{#each errorMessages}}
@@ -22,10 +30,8 @@
               <span class="icon-hash" title="Language"></span>
             </div>
 
-            <button type="submit" class="btn-primary">Add</button>
-          </form>
-        <a href="/survey"> HAAAAAAAAAAAAAAAA weed is tite </a>     
-
+            <button type="submit" class="btn-primary">Submit</button>
+          </form> -->
       </div>
       
     </div>

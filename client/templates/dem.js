@@ -4,6 +4,18 @@ Template.dem.created = function() {
   Session.set(ERRORS_KEY, {});
 };
 
+Schemas.Demographics = new SimpleSchema({
+  language: {
+    type: String
+  },
+  age: {
+    type: Number
+  },
+  gender: {
+    type: String
+  }
+});
+
 
 Template.dem.helpers({
   errorMessages: function() {
@@ -12,37 +24,41 @@ Template.dem.helpers({
   errorClass: function(key) {
     return Session.get(ERRORS_KEY)[key] && 'error';
   },
+  langOptions: function () {
+    return [
+     {label: "English", value: "English"},
+     {label: "Hebrew", value: "Hebrew"},
+     {label: "Arabic", value: "Arabic"}
+    ];
+  },
+  genderOptions: function() {
+    return [
+      {label: "Female", value: "Female"},
+      {label: "Male", value: "Male"},
+    ];
+  }
 });
 
 Template.dem.events({
   'submit': function(event, template) {
-    event.preventDefault();
-
+    event.preventDefault();  
     var age = template.$('[name=age]').val();
     var language = template.$('[name=language]').val();
+    var gender = template.$('[name=gender]').val();
 
-    var errors = {};
 
-    if(! age) {
-      errors.courseName = "Age Required";
-    }
+    Voter.insert({
+      'age': age,
+      'langage': language,
+      'gender': gender,
+      'votes': {}
+    })
+    var demo = {
+      
+    };
 
-    if(! language) {
-      errors.department = "Language Required";
-    }
+    Session.set('demographic', demo);
 
-    if (isNaN(age)) {
-      errors.courseNumber = 'Age must be a number';
-    } else {
-      age = parseInt(age);
-    }
-
-    Session.set(ERRORS_KEY, errors);
-    if (_.keys(errors).length) {
-      return;
-    }
-  },
-  'click .js-back-button': function() {
-    
+    Router.go('survey');
   }
 });

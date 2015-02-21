@@ -12,3 +12,8 @@ meteorhacks:npm
 
 npm-container
 iron:router
+less
+session
+nemo64:bootstrap
+jquery
+aldeed:autoform
