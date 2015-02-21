@@ -11,27 +11,29 @@ Template.question.events({
   // handle mousedown otherwise the blur handler above will swallow the click
   // on iOS, we still require the click event so handle both
   'click #upvote': function(event, template) {
+    var str = this.toString();
     var voted = Session.get('voted');
-    console.log();
-    if(voted.indexOf(this.text) == -1) {
-      voted.push(this.text);
+    var upvoted = Session.get('upvoted');
+
+    if(voted.indexOf(str) == -1) {
+      voted.push(str);
+      upvoted.push(str);
+
       Session.set('voted', voted);
-      var u = parseInt(Session.get('upvotes'));
-      if(u !== 0) {
-        Session.set('upvotes', u-1);
-      }
+      Session.set('upvoted', upvoted);  
     }  
   },
   'click #downvote': function(event, template) {
+    var str = this.toString();
     var voted = Session.get('voted');
-    console.log();
-    if(voted.indexOf(this.text) == -1) {
-      voted.push(this.text);
+    var downvoted = Session.get('downvoted');
+
+    if(voted.indexOf(str) == -1) {
+      voted.push(str);
+      downvoted.push(str);
+
       Session.set('voted', voted);
-      var u = parseInt(Session.get('downvotes'));
-      if(u !== 0) {
-        Session.set('downvotes', u-1);
-      }
+      Session.set('downvoted', downvoted);
     }
   }
 });

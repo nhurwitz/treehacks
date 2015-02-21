@@ -34,7 +34,7 @@ Template.dem.helpers({
   genderOptions: function() {
     return [
       {label: "Female", value: "Female"},
-      {label: "Male", value: "Male"},
+      {label: "Male", value: "Male"}
     ];
   }
 });
@@ -47,18 +47,14 @@ Template.dem.events({
     var gender = template.$('[name=gender]').val();
 
 
-    Voter.insert({
+   var id = Voter.insert({
       'age': age,
       'langage': language,
       'gender': gender,
-      'votes': {}
-    })
-    var demo = {
-      
-    };
-
-    Session.set('demographic', demo);
-
-    Router.go('survey');
+      'votes': []
+    });
+ 
+   Session.set('userid', id);
+   Router.go('survey');
   }
 });

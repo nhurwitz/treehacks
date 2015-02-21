@@ -1,5 +1,7 @@
 Session.setDefault('voted', []);
 
+Session.setDefault('upvoted', []);
+Session.setDefault('downvoted', []);
 
 Template.survey.helpers({
   errorMessages: function() {
@@ -8,50 +10,50 @@ Template.survey.helpers({
   errorClass: function(key) {
     return Session.get(ERRORS_KEY)[key] && 'error';
   },
-  langOptions: function () {
-    return [
-      {
-        optgroup: "First Language",
-        options: [
-          {label: "English", value: "English"},
-          {label: "Hebrew", value: "Hebrew"},
-          {label: "Arabic", value: "Arabic"}
-        ]
-      }
-    ];
-  },
   questions: function() {
-    var q = Questions.find({});
-    Session.setDefault('upvotes', Math.floor(Questions.find({}).count()/4));
+    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/4));
     Session.setDefault('downvotes', Math.floor(Session.get('upvotes')/2));
-    return q;
+    return Object.keys(IDEAS);
   },  
   upLeft: function() {
-    return Session.get('upvotes');
+    return Math.floor(Object.keys(IDEAS).length/4) - Session.get('upvoted').length;
   },
   downLeft: function() {
-    return Session.get('downvotes');
+    return Math.floor(Object.keys(IDEAS).length/8) - Session.get('downvoted').length
   },
 });
 
 Template.survey.events({
   'submit': function(event, template) {
     event.preventDefault();  
-    var age = template.$('[name=age]').val();
-    var language = template.$('[name=language]').val();
 
-    var demo = {
-      'age': age,
-      'langage': language
-    };
+    if(Session.get('voted').length = 0) {
+      //error
+    }
+    var userVotes = [];
+    for(var v in Session.get('upvoted')) {
+      userVotes.push(Vote.insert({
+        idea: v,
+        sentiment: 1
+      }));
+    }
 
-    Session.set('demographic', demo);
+    for(var v in Session.get('downvoted')) {
+      userVotes.push(Vote.insert({
+        idea: v,
+        sentiment: 0
+      }));
+    }
 
-    Router.go('survey');
+    Voter.update(Session.get('userid'), {$set: {votes: userVotes}});
+
+    Router.go('end');
   },
   'reset': function(event, template) {
-    Session.set('upvotes', Math.floor(Questions.find({}).count()/4));
+    Session.set('upvotes', Math.floor(Object.keys(IDEAS).length/4));
     Session.set('downvotes', Math.floor(Session.get('upvotes')/2));
     Session.set('voted', []);
+    Session.set('upvoted', []);
+    Session.set('downvoted', []);
   }
 });

@@ -8,30 +8,9 @@
         {{#autoForm id="demForm" schema=Schemas.Demographics}}
           {{> afFormGroup name="language" options=langOptions}}
           {{> afFormGroup name="age"}}
-          {{> afFormGroup name="gender" options="genderOptions"}}
+          {{> afFormGroup name="gender" options=genderOptions}}
           <button type="submit" class="btn btn-primary">Submit</button>
         {{/autoForm}}
-        <!-- <form>
-            {{#if errorMessages}}
-              <div class="list-errors">
-                {{#each errorMessages}}
-                  <div class="list-item">{{this}}</div>
-                {{/each}}
-              </div>
-            {{/if}}
-
-            <div class="input-symbol" {{errorClass 'age'}}>
-              <input type="text" name="age" placeholder="Age" />
-              <span class="icon-file-text" title="Age"></span>
-            </div>
-
-            <div class="input-symbol" {{errorClass 'language'}}>
-              <input type="text" name="language" placeholder="Language" />
-              <span class="icon-hash" title="Language"></span>
-            </div>
-
-            <button type="submit" class="btn-primary">Submit</button>
-          </form> -->
       </div>
       
     </div>
