@@ -1,8 +1,17 @@
 <template name="appBody">
-  {{> welcome}} 
+  <div id="container">
+    <div id="content-container">
+       {{> welcome}}
+    </div>
+  </div> 
 </template>
 
 <template name="welcome">
-  <h1> Welcome!! </h1>
-  <a href="/dem"> I agree LOLOLOL </a>
+  <div class="welcome-header">
+    Welcome
+  </div>
+  <div class="agree-button">
+    <a href="/dem" class="js-add-course btn-primary"> I agree LOLOLOL </a>
+  </div>
+  
 </template>

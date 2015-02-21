@@ -1,4 +1,33 @@
 <template name = "dem">
-<h1> LOLOLOL </h1>
-<a href="/survey"> HAAAAAAAAAAAAAAAAA weed is tite </a>
+  <div id="container">
+    <div id="content-container">
+      <h1> LOLOLOL </h1>  
+      <div class="content-scrollable">
+        <form>
+            {{#if errorMessages}}
+              <div class="list-errors">
+                {{#each errorMessages}}
+                  <div class="list-item">{{this}}</div>
+                {{/each}}
+              </div>
+            {{/if}}
+
+            <div class="input-symbol" {{errorClass 'age'}}>
+              <input type="text" name="age" placeholder="Age" />
+              <span class="icon-file-text" title="Age"></span>
+            </div>
+
+            <div class="input-symbol" {{errorClass 'language'}}>
+              <input type="text" name="language" placeholder="Language" />
+              <span class="icon-hash" title="Language"></span>
+            </div>
+
+            <button type="submit" class="btn-primary">Add</button>
+          </form>
+        <a href="/survey"> HAAAAAAAAAAAAAAAA weed is tite </a>     
+
+      </div>
+      
+    </div>
+  </div>
 </template>
