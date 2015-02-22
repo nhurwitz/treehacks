@@ -69,9 +69,17 @@ Template.end.rendered = function() {
       .attr("width", width)
       .attr("height", height);
 
-  var color = d3.scale.linear()
+  var colorGender = d3.scale.linear()
       .domain([minage, maxage])
-      .range(['#81CFE0', '#F62459']);
+      .range(['blue', 'red']);
+
+   var colorAge = d3.scale.linear()
+      .domain([minage, maxage])
+      .range(['white', 'black']);
+      
+  var colorLanguage = d3.scale.linear()
+      .domain([minage, maxage])
+      .range(['orange', 'green']);       
 
 
   function wordNumber(word) {
@@ -92,10 +100,10 @@ Template.end.rendered = function() {
   drawNodes = function drawNodes() {
     node.style("fill", function(d, i) {
         switch(Session.get('filter')) {
-          case 'age': return color(d.age);
-          case 'gender': return color(wordNumber(d.gender));
-          case 'language': return color(wordNumber(d.language));
-          default: return color(d.age); 
+          case 'age': return colorAge(d.age);
+          case 'gender': return colorGender(wordNumber(d.gender));
+          case 'language': return colorLanguage(wordNumber(d.language));
+          default: return colorAge(d.age); 
         } 
         
       });
