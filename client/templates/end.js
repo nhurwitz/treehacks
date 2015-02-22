@@ -20,6 +20,7 @@ Template.end.rendered = function() {
       for(var j = 0; j < l2; j++) {
         var queriedVote = Vote.find({_id:Voter.find({}).fetch()[i].votes[j]}).fetch()[0];
         var idea = queriedVote.idea;
+        console.log(idea);
         var sentiment = queriedVote.sentiment;
 
         var idea_val = IDEAS_MAP[idea] * (sentiment == 0 ? -1 : 1);
