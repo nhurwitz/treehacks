@@ -1,0 +1,23 @@
+#d3-container {
+  @toggle-height: 75px;
+  @legend-width: 200px;
+
+  #toggles {
+    text-align: center;
+    width: 100%;
+    height: @toggle-height;
+    /*background: gray;*/
+  }
+
+  #legend {
+    background: yellow;
+    width: @legend-width;
+    height: 100%;
+  }  
+
+  #container {
+    .position(absolute, @toggle-height, 0, 0, @legend-width);
+  }
+}
+
+

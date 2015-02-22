@@ -33,7 +33,8 @@ Template.dem.helpers({
   genderOptions: function() {
     return [
       {label: "Female", value: "Female"},
-      {label: "Male", value: "Male"}
+      {label: "Male", value: "Male"},
+      {label: "Prefer not to identify.", value: "nd"}
     ];
   }
 });
@@ -76,7 +77,7 @@ Template.dem.events({
 
    var id = Voter.insert({
       'age': age,
-      'langage': language,
+      'language': language,
       'gender': gender,
       'votes': []
     });

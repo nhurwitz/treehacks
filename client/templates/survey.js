@@ -3,6 +3,11 @@ Session.setDefault('voted', []);
 Session.setDefault('upvoted', []);
 Session.setDefault('downvoted', []);
 
+function shuffle(o){
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
 Template.survey.helpers({
   errorMessages: function() {
     return _.values(Session.get(ERRORS_KEY));
@@ -13,7 +18,7 @@ Template.survey.helpers({
   questions: function() {
     Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/4));
     Session.setDefault('downvotes', Math.floor(Session.get('upvotes')/2));
-    return Object.keys(IDEAS);
+    return shuffle(Object.keys(IDEAS));
   },  
   upLeft: function() {
     return Math.floor(Object.keys(IDEAS).length/4) - Session.get('upvoted').length;
@@ -50,8 +55,6 @@ Template.survey.events({
     Router.go('end');
   },
   'reset': function(event, template) {
-    Session.set('upvotes', Math.floor(Object.keys(IDEAS).length/4));
-    Session.set('downvotes', Math.floor(Session.get('upvotes')/2));
     Session.set('voted', []);
     Session.set('upvoted', []);
     Session.set('downvoted', []);
