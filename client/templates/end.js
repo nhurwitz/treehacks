@@ -1,5 +1,7 @@
 Session.setDefault('filter', 'none');
 Session.setDefault('compare', 'none');
+Session.setDefault('keyword', 0);
+
 var drawNodes;
 var compareSet = [];
 var users = []; 
@@ -183,11 +185,17 @@ Template.end.events({
   'click #reset-button': function(event, template) {
     Session.set('compare', 'none');
     Session.set('filter', 'none');
+    Session.set('keyword', 0)
+
     document.getElementById("bibi-button").className = "btn btn-default";
     document.getElementById("abbas-button").className = "btn btn-default";
     document.getElementById("age-button").className = "btn btn-default";
     document.getElementById("gender-button").className = "btn btn-default";
     document.getElementById("language-button").className = "btn btn-default";
     drawNodes();
+  },
+  'click #keywords-list': function(event, template) {
+    console.log(IDEAS_MAP[this.toString()])
+    Session.set('keyword', IDEAS_MAP[this.toString()]);
   }
 });
