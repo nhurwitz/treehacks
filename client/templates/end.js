@@ -71,7 +71,7 @@ Template.end.rendered = function() {
     node.style("fill", function(d, i) {
         switch(Session.get('filter')) {
           case 'age': return color(d.age);
-          case 'gender': return d.gender == 'nd' ? 'black' : color(wordNumber(d.gender));
+          case 'gender': return color(wordNumber(d.gender));
           case 'language': return color(wordNumber(d.language));
           default: return color(d.age); 
         } 
@@ -107,16 +107,45 @@ Template.end.rendered = function() {
       .on("mousedown", mousedown);
 
   function tick(e) {
+    node
+        .each(cluster(10 * e.alpha * e.alpha))
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+  }
 
-    // Push different nodes in different directions for clustering.
-    var k = 6 * e.alpha;
-    nodes.forEach(function(o, i) {
-      o.y += i & 1 ? k : -k;
-      o.x += i & 2 ? k : -k;
+  // Move d to be adjacent to the cluster node.
+  function cluster(alpha) {
+    var max = {};
+
+    // Find the largest node for each cluster.
+    nodes.forEach(function(d) {
+      if (!(d.agree in max)) {
+        max[d.agree] = d;
+      }
     });
 
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    return function(d) {
+      var node = max[d.agree],
+          l,
+          r,
+          x,
+          y,
+          i = -1;
+
+      if (node == d) return;
+
+      x = d.x - node.x;
+      y = d.y - nodes.y;
+      l = Math.sqrt(x * x + y * y);
+      r = 10;
+      if (l != r) {
+        l = (l - r) / l * alpha;
+        d.x -= x *= l;
+        d.y -= y *= l;
+        node.x += x;
+        node.y += y;
+      }
+    };
   }
 
   function mousedown() {
