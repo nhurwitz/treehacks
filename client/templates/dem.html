@@ -13,29 +13,32 @@
               {{/each}}
             </div>
           {{/if}}
+          <div class = "form-wrap">
+            <div class="input-symbol {{errorClass 'age'}}">
+              <input type="text" name="age" placeholder="Age" />
+              <span class="icon-access-time" title="Your Age"></span>
+            </div>
 
-          <div class="input-symbol {{errorClass 'age'}}">
-            <input type="text" name="age" placeholder="Your Age" />
-            <span title="Your Age"></span>
+            <div class="input-symbol {{errorClass 'language'}}">
+              <input type="text" name="language" placeholder="Home Language" />
+              <span class="icon-language" title="Your First Language"></span>
+            </div>
+
+            <div class="input-symbol  {{errorClass 'gender'}}">
+              <input type="text" name="gender" placeholder="Gender" />
+              <span class="icon-person-outline" title="Gender"></span>
+            </div>
+        </div>
+          <div id = "but">
+             <button type="submit" class="btn-primary" id = "buts">Submit</button>
           </div>
-
-          <div class="input-symbol {{errorClass 'language'}}">
-            <input type="text" name="language" placeholder="Your First Language" />
-            <span title="Your First Language"></span>
-          </div>
-
-          <div class="input-symbol {{errorClass 'gender'}}">
-            <input type="text" name="gender" placeholder="Your Gender" />
-            <span title="Gender"></span>
-          </div>
-
-          <button type="submit" class="btn-primary">Sign in</button>
-        </form>
-
+       </form>
+        
 
       </div>
     </div>
   </div>
+
 </template>
 
 

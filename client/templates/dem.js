@@ -52,7 +52,7 @@ Template.dem.events({
       errors.age = "Age Required";
     }
 
-    if(isNan(age)) {
+    if(isNaN(age)) {
       errors.age = "Invalid Age";
     } else {
       age = parseInt(age);
