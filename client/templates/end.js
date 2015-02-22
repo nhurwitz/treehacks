@@ -1,4 +1,4 @@
-Session.setDefault('filter', 'none');
+Session.setDefault('filter', 'age');
 Session.setDefault('compare', 'none');
 Session.setDefault('keyword', 0);
 
@@ -18,9 +18,9 @@ Template.end.rendered = function() {
       var voterData = [];
       var l2 = Voter.find({}).fetch()[i].votes.length;
       for(var j = 0; j < l2; j++) {
-        var queriedVote = Vote.find({_id:Voter.find({}).fetch()[i].votes[j]}).fetch()[0];
+        var queriedVote = Vote.find({_id:voter.votes[j]}).fetch()[0];
         var idea = queriedVote.idea;
-        console.log(idea);
+        
         var sentiment = queriedVote.sentiment;
 
         var idea_val = IDEAS_MAP[idea] * (sentiment == 0 ? -1 : 1);
@@ -28,14 +28,28 @@ Template.end.rendered = function() {
       }
       minage = Math.min(minage, voter.age);
       maxage = Math.max(maxage, voter.age);
+
+      agree = 1;
+      if (!!Session.get('keyword')) {
+        if ($.inArray(Session.get('keyword'), voterData) > -1) { 
+          agree = 2;
+          console.log(Session.get('keyword'));
+        }
+        else if ($.inArray(-Session.get('keyword'), voterData) > -1) {
+          agree = 0;
+        }
+        else {
+          agree = 1;
+        }
+      }
       var datum = {
         age: voter.age,
         gender: voter.gender,
         language: voter.language,
         votes: voterData,
-        agree: 0
+        agree: agree
       }
-
+      
       users.push(datum);
     }
 
@@ -49,6 +63,8 @@ Template.end.rendered = function() {
       .nodes(nodes)
       .size([width, height]);
       
+  var s = d3.selectAll('svg');
+  s.remove();
 
   var svg = d3.select("#container").append("svg")
       .attr("width", width)
@@ -80,11 +96,13 @@ Template.end.rendered = function() {
           case 'age': return color(d.age);
           case 'gender': return color(wordNumber(d.gender));
           case 'language': return color(wordNumber(d.language));
-          default: return 'black'; 
+          default: return color(d.age); 
         } 
         
       });
   };  
+
+  drawNodes();
   node.style("stroke", function(d, i) { return d3.rgb(fill(i & 3)).darker(2); })
       .call(force.drag)
       .on("mousedown", function() { d3.event.stopPropagation(); })
@@ -116,18 +134,22 @@ Template.end.rendered = function() {
   d3.select("#container")
       .on("mousedown", mousedown);
 
-  function tick(e) {
+    var foci = [{x: 150, y: 150}, {x: 600, y: 250}, {x: 1100, y: 250}];
 
-    // Push different nodes in different directions for clustering.
-    var k = 6 * e.alpha;
+  function tick(e) {
+    var k = .1 * e.alpha;
+
+    // Push nodes toward their designated focus.
     nodes.forEach(function(o, i) {
-      o.y += k;
-      o.x += -k;
+      o.y += (foci[o.agree].y - o.y) * k;
+      o.x += (foci[o.agree].x - o.x) * k;
     });
 
-    node.attr("cx", function(d) { return d.x; })
+    node
+        .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   }
+
 
   function mousedown() {
     nodes.forEach(function(o, i) {
@@ -135,15 +157,15 @@ Template.end.rendered = function() {
       o.y += (Math.random() - .5) * 40;
     });
     force.resume();
-  }
-  });
-};
+    }
+    });
+  };
 
-Template.end.helpers({
-  'keywords': function() {
-    return Object.keys(IDEAS);
-  }
-})
+  Template.end.helpers({
+    'keywords': function() {
+      return Object.keys(IDEAS);
+    }
+  })
 
 
 Template.end.events({
@@ -196,7 +218,7 @@ Template.end.events({
     drawNodes();
   },
   'click #keywords-list': function(event, template) {
-    console.log(IDEAS_MAP[this.toString()])
     Session.set('keyword', IDEAS_MAP[this.toString()]);
+    drawNodes();
   }
 });
