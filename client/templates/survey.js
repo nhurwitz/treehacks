@@ -24,7 +24,7 @@ Template.survey.helpers({
     return Math.floor(Object.keys(IDEAS).length/4) - Session.get('upvoted').length;
   },
   downLeft: function() {
-    return Math.floor(Object.keys(IDEAS).length/8) - Session.get('downvoted').length
+    return Math.floor(Object.keys(IDEAS).length/8) - Session.get('downvoted').length;
   },
 });
 
