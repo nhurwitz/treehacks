@@ -13,9 +13,11 @@
       </div>
     </div>
     <div id="legend">
-      dolo missions
-      <div id="heatmap">
-      </div>
+      {{#each keywords}}
+        <div class ="list-item">
+          <button type="button" id="{{this}}" class="btn">"{{this}}"</button>
+        </div>
+      {{/each}}
     </div>
     <div id="container">
     </div>
