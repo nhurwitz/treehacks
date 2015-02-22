@@ -71,7 +71,7 @@ Template.end.rendered = function() {
 
   var color = d3.scale.linear()
       .domain([minage, maxage])
-      .range(['#1e8bc3', '#674172']);
+      .range(['#81CFE0', '#F62459']);
 
 
   function wordNumber(word) {
@@ -151,12 +151,12 @@ Template.end.rendered = function() {
 
 
   function mousedown() {
-    nodes.forEach(function(o, i) {
-      o.x += (Math.random() - .5) * 40;
-      o.y += (Math.random() - .5) * 40;
-    });
-    force.resume();
-    }
+      nodes.forEach(function(o, i) {
+        o.x += (Math.random() - .5) * 40;
+        o.y += (Math.random() - .5) * 40;
+      });
+      force.resume();
+      }
     });
   };
 
