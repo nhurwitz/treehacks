@@ -21,7 +21,7 @@ Template.survey.helpers({
     var obj = _.map(Object.keys(IDEAS), function(value, index){
         return {value: value, index: index};
     });
-    
+
     return shuffle(obj);
   },  
   upLeft: function() {
@@ -33,7 +33,7 @@ Template.survey.helpers({
 });
 
 Template.survey.events({
-  'submit': function(event, template) {
+  'click #submit-button': function(event, template) {
     event.preventDefault();  
 
     if(Session.get('voted').length = 0) {
@@ -60,7 +60,12 @@ Template.survey.events({
 
     Router.go('end');
   },
-  'reset': function(event, template) {
+  'click #reset-button': function(event, template) {
+    for(var i = 0; i < Object.keys(IDEAS); i++) {
+      var id = "list" + i;
+      document.getElementById(id).className = "list-item";
+    }
+    
     Session.set('voted', []);
     Session.set('upvoted', []);
     Session.set('downvoted', []);

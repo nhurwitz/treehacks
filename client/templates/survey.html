@@ -5,7 +5,7 @@
         Voting
       </div>
       <div class = "explain">
-        Choose up to 3 topics that you believe strongly in by selecting the plus button, and up to one you disagree with by selecting the minus button. 
+        Choose up to four topics that you believe strongly in by selecting the plus button, and up to two you disagree with by selecting the minus button. 
       </div>
       <div class = "surroundform">
         <div class = "form-text">
@@ -17,8 +17,8 @@
         </div>
       </div>
       <div class = "buttonz">
-        <button type="reset" class="btn btn-primary" >Reset</button> &nbsp;
-        <button type="submit" class="btn btn-primary" >Submit</button>
+        <button type="reset" id="reset-button" class="btn btn-primary" >Reset</button> &nbsp;
+        <button type="submit" id="submit-button" class="btn btn-primary" >Submit</button>
       </div>
         <div class = "counters">
       Upvotes Remaining: {{upLeft}} <br> Downvotes Remaining: {{downLeft}} 
@@ -28,10 +28,10 @@
 </template>
 
 <template name="question">
-  <div class="list-item">
+  <div id="list{{index}}" class="list-item">
     <span class="icon-plus-alt" id="upvote"></span> &nbsp; 
     <span class="icon-minus-alt" id="downvote"></span>  &nbsp; 
-    {{this}}
+    {{value}}
   </div>
 </template>
 
