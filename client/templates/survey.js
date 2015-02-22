@@ -16,15 +16,15 @@ Template.survey.helpers({
     return Session.get(ERRORS_KEY)[key] && 'error';
   },
   questions: function() {
-    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/4));
+    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/3));
     Session.setDefault('downvotes', Math.floor(Session.get('upvotes')/2));
     return shuffle(Object.keys(IDEAS));
   },  
   upLeft: function() {
-    return Math.floor(Object.keys(IDEAS).length/4) - Session.get('upvoted').length;
+    return Math.floor(Object.keys(IDEAS).length/3) - Session.get('upvoted').length;
   },
   downLeft: function() {
-    return Math.floor(Object.keys(IDEAS).length/8) - Session.get('downvoted').length;
+    return Math.floor(Object.keys(IDEAS).length/6) - Session.get('downvoted').length;
   },
 });
 

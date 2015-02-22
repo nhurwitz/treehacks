@@ -165,6 +165,26 @@ Template.end.rendered = function() {
       return _.map(Object.keys(IDEAS), function(value, index){
         return {value: value, index: index};
       });
+    },
+    'pmNetanyahu': function() {
+      var current = Session.get('keyword');
+      for(var i = 0; i < NETANYAHU.length; i++) {
+        if(NETANYAHU[i] == current || -1*NETANYAHU[i] == current) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    'presAbbas': function() {
+      var current = Session.get('keyword');
+      for(var i = 0; i < ABBAS.length; i++) {
+        if(ABBAS[i] == current || -1*ABBAS[i] == current) {
+          return true;
+        }
+      }
+
+      return false;
     }
   })
 
@@ -194,25 +214,13 @@ Template.end.events({
     document.getElementById("language-button").className = "btn btn-primary active";
     drawNodes();
   },
-  'click #bibi-button': function(event, template) {
-    event.preventDefault();
-    Session.set('compare', 'netanyahu');
-    document.getElementById("bibi-button").className = "btn btn-primary active";
-    document.getElementById("abbas-button").className = "btn btn-default";
-  },
-  'click #abbas-button': function(event, template) {
-    event.preventDefault();
-    Session.set('compare', 'netanyahu');
-    document.getElementById("bibi-button").className = "btn btn-default";
-    document.getElementById("abbas-button").className = "btn btn-primary active";
-  },
   'click #reset-button': function(event, template) {
     Session.set('compare', 'none');
     Session.set('filter', 'none');
+    var id = "keywords" + (Session.get('keyword')-1);
+    document.getElementById(id).className = "btn keywords-list";
     Session.set('keyword', 0)
 
-    document.getElementById("bibi-button").className = "btn btn-default";
-    document.getElementById("abbas-button").className = "btn btn-default";
     document.getElementById("age-button").className = "btn btn-default";
     document.getElementById("gender-button").className = "btn btn-default";
     document.getElementById("language-button").className = "btn btn-default";

@@ -14,7 +14,7 @@ Template.question.events({
     var str = this.toString();
     var voted = Session.get('voted');
     var upvoted = Session.get('upvoted');
-    if(upvoted.length == Math.floor(Object.keys(IDEAS).length/4))
+    if(upvoted.length == Math.floor(Object.keys(IDEAS).length/3))
       return;
 
     if(voted.indexOf(str) == -1) {
@@ -29,7 +29,7 @@ Template.question.events({
     var str = this.toString();
     var voted = Session.get('voted');
     var downvoted = Session.get('downvoted');
-    if(downvoted.length == Math.floor(Object.keys(IDEAS).length/8))
+    if(downvoted.length == Math.floor(Object.keys(IDEAS).length/6))
       return;
 
     if(voted.indexOf(str) == -1) {
