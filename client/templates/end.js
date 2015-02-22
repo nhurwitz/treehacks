@@ -101,7 +101,7 @@ Template.end.rendered = function() {
     node.style("fill", function(d, i) {
         switch(Session.get('filter')) {
           case 'age': return colorAge(d.age);
-          case 'gender': return colorGender(wordNumber(d.gender));
+          case 'gender': return d.gender == 'Not disclosed' ? 'black' : colorGender(wordNumber(d.gender));
           case 'language': return colorLanguage(wordNumber(d.language));
           default: return colorAge(d.age); 
         } 
@@ -225,11 +225,14 @@ Template.end.events({
   'click #reset-button': function(event, template) {
     Session.set('compare', 'none');
     Session.set('filter', 'none');
-    var id = "keywords" + (Session.get('keyword')-1);
-    document.getElementById(id).className = "btn keywords-list";
-    Session.set('keyword', 0)
-
-    document.getElementById("age-button").className = "btn btn-default";
+    if(Session.get('keyword')>0) {
+      var id = "keywords" + (Session.get('keyword')-1);
+      console.log(id);
+      document.getElementById(id).className = "btn keywords-list";
+      Session.set('keyword', 0);
+    }
+    
+    document.getElementById("age-button").className = "btn btn-primary active";
     document.getElementById("gender-button").className = "btn btn-default";
     document.getElementById("language-button").className = "btn btn-default";
     drawNodes();
