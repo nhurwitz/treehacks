@@ -23,19 +23,6 @@ Template.dem.helpers({
   },
   errorClass: function(key) {
     return Session.get(ERRORS_KEY)[key] && 'error';
-  },
-  langOptions: function () {
-    return [
-     {label: "Hebrew", value: "Hebrew"},
-     {label: "Arabic", value: "Arabic"}
-    ];
-  },
-  genderOptions: function() {
-    return [
-      {label: "Female", value: "Female"},
-      {label: "Male", value: "Male"},
-      {label: "Prefer not to identify.", value: "nd"}
-    ];
   }
 });
 
