@@ -2,12 +2,15 @@
 input[type="text"],
 input[type="email"],
 input[type="password"],
-textarea {
+textarea,
+select {
   // Sizing
   .font-s2;
   .type-regular;
   padding: .75rem 0; //total height ~48
   line-height: 1.5rem !important;
+  border-radius: 5px 5px 5px 5px;
+
 
   // Style
   .placeholder(@color-complementary);
@@ -20,8 +23,17 @@ textarea {
   &[disabled] { opacity: .5; }
 }
 
+select{
+   width: 283px;
+   height: 44px;
+   background: white;
+  text-indent: 42px;
+  border-radius: 0px;
+    -webkit-appearance: none;
+}
+
 // Remove chrome/saf autofill yellow background
-input:-webkit-autofill {
+input, select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px @color-empty inset;
 }
 
