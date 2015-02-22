@@ -6,7 +6,7 @@
       </div>
 
       <div class="btn-group" role="group" aria-label="...">
-        <button type="button" id="age-button" class="btn btn-default">Age</button>
+        <button type="button" id="age-button" class="btn btn-primary active">Age</button>
         <button type="button" id="gender-button" class="btn btn-default">Gender</button>
         <button type="button" id="language-button" class="btn btn-default">Language</button>
       </div>
@@ -19,11 +19,13 @@
     <div id="legend">
       {{#each keywords}}
         <div class ="list-item">
-          <button type="button" id="keywords-list" class="btn">"{{this}}"</button>
+          <button type="button" id="keywords{{index}}" class="btn keywords-list">"{{value}}"</button>
         </div>
       {{/each}}
     </div>
     <div id="container">
     </div>
-  </div>
+    <div id="timeline"> Agree
+    </div>
+  </div>  
 </template>

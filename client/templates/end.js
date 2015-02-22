@@ -33,7 +33,6 @@ Template.end.rendered = function() {
       if (!!Session.get('keyword')) {
         if ($.inArray(Session.get('keyword'), voterData) > -1) { 
           agree = 2;
-          console.log(Session.get('keyword'));
         }
         else if ($.inArray(-Session.get('keyword'), voterData) > -1) {
           agree = 0;
@@ -72,7 +71,7 @@ Template.end.rendered = function() {
 
   var color = d3.scale.linear()
       .domain([minage, maxage])
-      .range(['blue', 'red']);
+      .range(['#1e8bc3', '#674172']);
 
 
   function wordNumber(word) {
@@ -163,7 +162,9 @@ Template.end.rendered = function() {
 
   Template.end.helpers({
     'keywords': function() {
-      return Object.keys(IDEAS);
+      return _.map(Object.keys(IDEAS), function(value, index){
+        return {value: value, index: index};
+      });
     }
   })
 
@@ -217,8 +218,23 @@ Template.end.events({
     document.getElementById("language-button").className = "btn btn-default";
     drawNodes();
   },
-  'click #keywords-list': function(event, template) {
-    Session.set('keyword', IDEAS_MAP[this.toString()]);
-    drawNodes();
+  'click .keywords-list': function(event, template) {
+    var prev = Session.get('keyword');
+    var id;
+
+    if(prev == 0) {
+      Session.set('keyword', IDEAS_MAP[this.value]);
+      id = "keywords" + this.index;
+      document.getElementById(id).className = "btn2 keywords-list";
+      drawNodes();
+    } else if (prev-1 != this.index) {
+      prev -= 1;
+      id = "keywords" + prev;
+      document.getElementById(id).className = "btn keywords-list";
+      Session.set('keyword', IDEAS_MAP[this.value]);
+      id = "keywords" + this.index;
+      document.getElementById(id).className = "btn2 keywords-list";
+      drawNodes();
+    }
   }
 });
