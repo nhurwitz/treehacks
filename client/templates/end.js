@@ -32,10 +32,10 @@ Template.end.rendered = function() {
       agree = 1;
       if (!!Session.get('keyword')) {
         if ($.inArray(Session.get('keyword'), voterData) > -1) { 
-          agree = 2;
+          agree = 0;
         }
         else if ($.inArray(-Session.get('keyword'), voterData) > -1) {
-          agree = 0;
+          agree = 2;
         }
         else {
           agree = 1;
