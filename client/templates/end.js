@@ -1,11 +1,23 @@
-Session.setDefault('filter', 'age');
+Session.setDefault('filter', 'none');
+Session.setDefault('compare', 'none');
 var drawNodes;
+var compareSet;
+
+
 Template.end.rendered = function() {
   this.autorun(function() {
     var minage = 1000;
     var maxage = 0;
 
     var users = [];
+    switch(Session.get('compare')) {
+      case 'none': compareSet = [];
+                    break;
+      case 'netanyahu': compareSet = NETANYAHU;
+                    break;
+      case 'abbas': compareSet = ABBAS;
+                    break; 
+    }
     var l = Voter.find({}).fetch().length;
     for(var i = 0; i < l; i++) {
       var voter = Voter.find({}).fetch()[i];
@@ -162,16 +174,37 @@ Template.end.events({
   'click #age-button': function(event, template) {
     event.preventDefault();
     Session.set('filter', 'age');
+    document.getElementById("age-button").className = "btn btn-primary active";
+    document.getElementById("gender-button").className = "btn btn-default";
+    document.getElementById("language-button").className = "btn btn-default";
     drawNodes();
   },
   'click #gender-button': function(event, template) {
     event.preventDefault();
     Session.set('filter', 'gender');
+    document.getElementById("age-button").className = "btn btn-default";
+    document.getElementById("gender-button").className = "btn btn-primary active";
+    document.getElementById("language-button").className = "btn btn-default";
     drawNodes();
   },
   'click #language-button': function(event, template) {
     event.preventDefault();
     Session.set('filter', 'language');
+    document.getElementById("age-button").className = "btn btn-default";
+    document.getElementById("gender-button").className = "btn btn-default";
+    document.getElementById("language-button").className = "btn btn-primary active";
     drawNodes();
+  },
+  'click #bibi-button': function(event, template) {
+    event.preventDefault();
+    Session.set('compare', 'netanyahu');
+    document.getElementById("bibi-button").className = "btn btn-primary active";
+    document.getElementById("abbas-button").className = "btn btn-default";
+  },
+  'click #abbas-button': function(event, template) {
+    event.preventDefault();
+    Session.set('compare', 'netanyahu');
+    document.getElementById("bibi-button").className = "btn btn-default";
+    document.getElementById("abbas-button").className = "btn btn-primary active";
   }
 });
