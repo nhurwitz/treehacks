@@ -10,15 +10,21 @@
   }
 
   #legend {
-    /*background: yellow;*/
+    .position(absolute, 0, 0, 0, 0);
     width: @legend-width;
     height: 100%;
 
     .list-item {
-      /*padding-top: 10px;*/
+      padding-top: 10px;
       text-align: center;
 
       .btn {
+        margin-left: 3px;
+        background: #FFFFFF;
+        opacity: 0.3;
+        color: #111111;
+        height: 44px;
+        border-radius: 4px;
         .force-wrap;
         text-transform: capitalize;
         padding: 0 0 0 0;
