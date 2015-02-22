@@ -1,0 +1,24 @@
+#d3-container {
+  @toggle-height: 60px;
+  @legend-width: 200px;
+
+    #toggles {
+    width: 100%;
+    height: @toggle-height;
+    background: gray;
+  }
+
+  #container {
+    background: pink; 
+    .position(absolute, @toggle-height, 0, 0, @legend-width);
+  }
+
+  #legend {
+    #heatmap {
+      height: 200px;
+      background: red;
+    }
+  }
+}
+
+
