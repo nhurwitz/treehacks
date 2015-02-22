@@ -16,7 +16,7 @@ Template.survey.helpers({
     return Session.get(ERRORS_KEY)[key] && 'error';
   },
   questions: function() {
-    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/3));
+    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/6));
     Session.setDefault('downvotes', Math.floor(Session.get('upvotes')/2));
     var obj = _.map(Object.keys(IDEAS), function(value, index){
         return {value: value, index: index};
@@ -25,10 +25,10 @@ Template.survey.helpers({
     return shuffle(obj);
   },  
   upLeft: function() {
-    return Math.floor(Object.keys(IDEAS).length/3) - Session.get('upvoted').length;
+    return Math.floor(Object.keys(IDEAS).length/6) - Session.get('upvoted').length;
   },
   downLeft: function() {
-    return Math.floor(Object.keys(IDEAS).length/6) - Session.get('downvoted').length;
+    return Math.floor(Object.keys(IDEAS).length/12) - Session.get('downvoted').length;
   },
 });
 
@@ -61,7 +61,7 @@ Template.survey.events({
     Router.go('end');
   },
   'click #reset-button': function(event, template) {
-    for(var i = 0; i < Object.keys(IDEAS); i++) {
+    for(var i = 0; i < Object.keys(IDEAS).length; i++) {
       var id = "list" + i;
       document.getElementById(id).className = "list-item";
     }
