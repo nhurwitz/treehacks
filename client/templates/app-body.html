@@ -1,17 +1,16 @@
+
 <template name="appBody">
-  <div id="container">
-    <div id="content-container">
-       {{> welcome}}
+  <div class = "container-fluid">
+           <img src='/logo.svg' height="250px" width="250px"> 
+    <div class="welcome-header">
+      We're not that different.
     </div>
-  </div> 
+    <div class="agree-button">
+      <a href="/dem" class="js-add-course btn-primary"> Go  </a>
+    </div>
+  </div>
+   <footer class = "footer">
+    <b> POWERED BY </b> &nbsp;  <img src = "/demo21.png"> 
+  </footer>
 </template>
 
-<template name="welcome">
-  <div class="welcome-header">
-    Welcome
-  </div>
-  <div class="agree-button">
-    <a href="/dem" class="js-add-course btn-primary"> I agree LOLOLOL </a>
-  </div>
-  
-</template>
