@@ -26,7 +26,6 @@ Template.dem.helpers({
   },
   langOptions: function () {
     return [
-     {label: "English", value: "English"},
      {label: "Hebrew", value: "Hebrew"},
      {label: "Arabic", value: "Arabic"}
     ];
