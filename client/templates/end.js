@@ -75,7 +75,7 @@ Template.end.rendered = function() {
 
    var colorAge = d3.scale.linear()
       .domain([minage, maxage])
-      .range(['white', 'black']);
+      .range(['#00ccff', '#ff6600']);
       
   var colorLanguage = d3.scale.linear()
       .domain([minage, maxage])
@@ -101,7 +101,7 @@ Template.end.rendered = function() {
     node.style("fill", function(d, i) {
         switch(Session.get('filter')) {
           case 'age': return colorAge(d.age);
-          case 'gender': return d.gender == 'Not disclosed' ? 'black' : colorGender(wordNumber(d.gender));
+          case 'gender': return d.gender == 'Not disclosed' ? 'gray' : colorGender(wordNumber(d.gender));
           case 'language': return colorLanguage(wordNumber(d.language));
           default: return colorAge(d.age); 
         } 
