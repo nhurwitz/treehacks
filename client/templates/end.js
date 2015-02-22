@@ -1,23 +1,15 @@
 Session.setDefault('filter', 'none');
 Session.setDefault('compare', 'none');
 var drawNodes;
-var compareSet;
-
+var compareSet = [];
+var users = []; 
 
 Template.end.rendered = function() {
   this.autorun(function() {
     var minage = 1000;
     var maxage = 0;
 
-    var users = [];
-    switch(Session.get('compare')) {
-      case 'none': compareSet = [];
-                    break;
-      case 'netanyahu': compareSet = NETANYAHU;
-                    break;
-      case 'abbas': compareSet = ABBAS;
-                    break; 
-    }
+    users = [];
     var l = Voter.find({}).fetch().length;
     for(var i = 0; i < l; i++) {
       var voter = Voter.find({}).fetch()[i];
@@ -37,7 +29,8 @@ Template.end.rendered = function() {
         age: voter.age,
         gender: voter.gender,
         language: voter.language,
-        votes: voterData
+        votes: voterData,
+        agree: 0
       }
 
       users.push(datum);
@@ -51,9 +44,8 @@ Template.end.rendered = function() {
   var nodes = users;
   var force = d3.layout.force()
       .nodes(nodes)
-      .size([width, height])
-      .on("tick", tick)
-      .start();
+      .size([width, height]);
+      
 
   var svg = d3.select("#container").append("svg")
       .attr("width", width)
@@ -97,13 +89,16 @@ Template.end.rendered = function() {
           var mouseVal = d3.mouse(this);
           div.style("display","none");
           div
-          .html(d.language + " " +d.age+" "+d.gender)
-            .style("left", (d3.event.pageX+12) + "px")
-            .style("top", (d3.event.pageY-10) + "px")
+          .html("Language: " + d.language + "<br>Age: " +d.age+"<br>Gender: "+ (d.gender == 'nd' ? 'Not Disclosed' : d.gender))
+            .style("left", (d.x+12) + "px")
+            .style("top", (d.y+10) + "px")
             .style("opacity", 1)
             .style("display","block");
         })
       .on("mouseout",function(){div.html(" ").style("display","none");});
+
+  force.on("tick", tick)
+        .start();
   
 
   svg.style("opacity", 1e-6)
@@ -119,45 +114,16 @@ Template.end.rendered = function() {
       .on("mousedown", mousedown);
 
   function tick(e) {
-    node
-        .each(cluster(10 * e.alpha * e.alpha))
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-  }
 
-  // Move d to be adjacent to the cluster node.
-  function cluster(alpha) {
-    var max = {};
-
-    // Find the largest node for each cluster.
-    nodes.forEach(function(d) {
-      if (!(d.agree in max)) {
-        max[d.agree] = d;
-      }
+    // Push different nodes in different directions for clustering.
+    var k = 6 * e.alpha;
+    nodes.forEach(function(o, i) {
+      o.y += k;
+      o.x += -k;
     });
 
-    return function(d) {
-      var node = max[d.agree],
-          l,
-          r,
-          x,
-          y,
-          i = -1;
-
-      if (node == d) return;
-
-      x = d.x - node.x;
-      y = d.y - nodes.y;
-      l = Math.sqrt(x * x + y * y);
-      r = 10;
-      if (l != r) {
-        l = (l - r) / l * alpha;
-        d.x -= x *= l;
-        d.y -= y *= l;
-        node.x += x;
-        node.y += y;
-      }
-    };
+    node.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
   }
 
   function mousedown() {
@@ -169,6 +135,13 @@ Template.end.rendered = function() {
   }
   });
 };
+
+Template.end.helpers({
+  'keywords': function() {
+    return Object.keys(IDEAS);
+  }
+})
+
 
 Template.end.events({
   'click #age-button': function(event, template) {

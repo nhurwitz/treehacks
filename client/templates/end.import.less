@@ -10,13 +10,38 @@
   }
 
   #legend {
-    background: yellow;
+    /*background: yellow;*/
     width: @legend-width;
     height: 100%;
+
+    .list-item {
+      /*padding-top: 10px;*/
+      text-align: center;
+
+      .btn {
+        .force-wrap;
+        text-transform: capitalize;
+        padding: 0 0 0 0;
+        font-size: 4;
+        width: 100%;
+      }
+    }
   }  
 
   #container {
     .position(absolute, @toggle-height, 0, 0, @legend-width);
+
+    .tooltip {
+      display: none;   
+      position: absolute;           
+      text-align: center;                                         
+      padding: 2px;             
+      font: 12px sans-serif;        
+      background: #FFFFFF;   
+      border: 0px;      
+      border-radius: 8px;           
+      /*pointer-events: none;         */
+    }
   }
 }
 
