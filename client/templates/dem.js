@@ -26,7 +26,6 @@ Template.dem.helpers({
   },
   langOptions: function () {
     return [
-     {label: "English", value: "English"},
      {label: "Hebrew", value: "Hebrew"},
      {label: "Arabic", value: "Arabic"}
     ];
@@ -46,6 +45,34 @@ Template.dem.events({
     var language = template.$('[name=language]').val();
     var gender = template.$('[name=gender]').val();
 
+    var errors = {};
+
+    if(!age) {
+      errors.age = "Age Required";
+    }
+
+    if(isNan(age)) {
+      errors.age = "Invalid Age";
+    } else {
+      age = parseInt(age);
+    }
+
+    if(age < 0 || age > 100) {
+      errors.age = "Invalid Age";
+    }
+
+    if(!gender) {
+      errors.gender = "Gender Required";
+    }
+
+    if(!language) {
+      errors.language = "First Language Required";
+    }
+
+    Session.set(ERRORS_KEY, errors);
+    if(_.keys(errors).length) {
+      return;
+    }
 
    var id = Voter.insert({
       'age': age,
