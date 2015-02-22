@@ -1,5 +1,7 @@
-Session.setDefault('filter', 'none');
+Session.setDefault('filter', 'age');
 Session.setDefault('compare', 'none');
+Session.setDefault('keyword', 0);
+
 var drawNodes;
 var compareSet = [];
 var users = []; 
@@ -16,8 +18,9 @@ Template.end.rendered = function() {
       var voterData = [];
       var l2 = Voter.find({}).fetch()[i].votes.length;
       for(var j = 0; j < l2; j++) {
-        var queriedVote = Vote.find({_id:Voter.find({}).fetch()[i].votes[j]}).fetch()[0];
+        var queriedVote = Vote.find({_id:voter.votes[j]}).fetch()[0];
         var idea = queriedVote.idea;
+        
         var sentiment = queriedVote.sentiment;
 
         var idea_val = IDEAS_MAP[idea] * (sentiment == 0 ? -1 : 1);
@@ -25,14 +28,27 @@ Template.end.rendered = function() {
       }
       minage = Math.min(minage, voter.age);
       maxage = Math.max(maxage, voter.age);
+
+      agree = 1;
+      if (!!Session.get('keyword')) {
+        if ($.inArray(Session.get('keyword'), voterData) > -1) { 
+          agree = 2;
+        }
+        else if ($.inArray(-Session.get('keyword'), voterData) > -1) {
+          agree = 0;
+        }
+        else {
+          agree = 1;
+        }
+      }
       var datum = {
         age: voter.age,
         gender: voter.gender,
         language: voter.language,
         votes: voterData,
-        agree: 0
+        agree: agree
       }
-
+      
       users.push(datum);
     }
 
@@ -46,14 +62,24 @@ Template.end.rendered = function() {
       .nodes(nodes)
       .size([width, height]);
       
+  var s = d3.selectAll('svg');
+  s.remove();
 
   var svg = d3.select("#container").append("svg")
       .attr("width", width)
       .attr("height", height);
 
-  var color = d3.scale.linear()
+  var colorGender = d3.scale.linear()
       .domain([minage, maxage])
       .range(['blue', 'red']);
+
+   var colorAge = d3.scale.linear()
+      .domain([minage, maxage])
+      .range(['white', 'black']);
+      
+  var colorLanguage = d3.scale.linear()
+      .domain([minage, maxage])
+      .range(['orange', 'green']);       
 
 
   function wordNumber(word) {
@@ -74,14 +100,16 @@ Template.end.rendered = function() {
   drawNodes = function drawNodes() {
     node.style("fill", function(d, i) {
         switch(Session.get('filter')) {
-          case 'age': return color(d.age);
-          case 'gender': return color(wordNumber(d.gender));
-          case 'language': return color(wordNumber(d.language));
-          default: return color(d.age); 
+          case 'age': return colorAge(d.age);
+          case 'gender': return colorGender(wordNumber(d.gender));
+          case 'language': return colorLanguage(wordNumber(d.language));
+          default: return colorAge(d.age); 
         } 
         
       });
   };  
+
+  drawNodes();
   node.style("stroke", function(d, i) { return d3.rgb(fill(i & 3)).darker(2); })
       .call(force.drag)
       .on("mousedown", function() { d3.event.stopPropagation(); })
@@ -113,34 +141,60 @@ Template.end.rendered = function() {
   d3.select("#container")
       .on("mousedown", mousedown);
 
-  function tick(e) {
+    var foci = [{x: 150, y: 150}, {x: 600, y: 250}, {x: 1100, y: 250}];
 
-    // Push different nodes in different directions for clustering.
-    var k = 6 * e.alpha;
+  function tick(e) {
+    var k = .1 * e.alpha;
+
+    // Push nodes toward their designated focus.
     nodes.forEach(function(o, i) {
-      o.y += k;
-      o.x += -k;
+      o.y += (foci[o.agree].y - o.y) * k;
+      o.x += (foci[o.agree].x - o.x) * k;
     });
 
-    node.attr("cx", function(d) { return d.x; })
+    node
+        .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   }
 
-  function mousedown() {
-    nodes.forEach(function(o, i) {
-      o.x += (Math.random() - .5) * 40;
-      o.y += (Math.random() - .5) * 40;
-    });
-    force.resume();
-  }
-  });
-};
 
-Template.end.helpers({
-  'keywords': function() {
-    return Object.keys(IDEAS);
-  }
-})
+  function mousedown() {
+      nodes.forEach(function(o, i) {
+        o.x += (Math.random() - .5) * 40;
+        o.y += (Math.random() - .5) * 40;
+      });
+      force.resume();
+      }
+    });
+  };
+
+  Template.end.helpers({
+    'keywords': function() {
+      return _.map(Object.keys(IDEAS), function(value, index){
+        return {value: value, index: index};
+      });
+    },
+    'pmNetanyahu': function() {
+      var current = Session.get('keyword');
+      for(var i = 0; i < NETANYAHU.length; i++) {
+        if(NETANYAHU[i] == current || -1*NETANYAHU[i] == current) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    'presAbbas': function() {
+      var current = Session.get('keyword');
+      for(var i = 0; i < ABBAS.length; i++) {
+        if(ABBAS[i] == current || -1*ABBAS[i] == current) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+  })
 
 
 Template.end.events({
@@ -168,16 +222,35 @@ Template.end.events({
     document.getElementById("language-button").className = "btn btn-primary active";
     drawNodes();
   },
-  'click #bibi-button': function(event, template) {
-    event.preventDefault();
-    Session.set('compare', 'netanyahu');
-    document.getElementById("bibi-button").className = "btn btn-primary active";
-    document.getElementById("abbas-button").className = "btn btn-default";
+  'click #reset-button': function(event, template) {
+    Session.set('compare', 'none');
+    Session.set('filter', 'none');
+    var id = "keywords" + (Session.get('keyword')-1);
+    document.getElementById(id).className = "btn keywords-list";
+    Session.set('keyword', 0)
+
+    document.getElementById("age-button").className = "btn btn-default";
+    document.getElementById("gender-button").className = "btn btn-default";
+    document.getElementById("language-button").className = "btn btn-default";
+    drawNodes();
   },
-  'click #abbas-button': function(event, template) {
-    event.preventDefault();
-    Session.set('compare', 'netanyahu');
-    document.getElementById("bibi-button").className = "btn btn-default";
-    document.getElementById("abbas-button").className = "btn btn-primary active";
+  'click .keywords-list': function(event, template) {
+    var prev = Session.get('keyword');
+    var id;
+
+    if(prev == 0) {
+      Session.set('keyword', IDEAS_MAP[this.value]);
+      id = "keywords" + this.index;
+      document.getElementById(id).className = "btn2 keywords-list";
+      drawNodes();
+    } else if (prev-1 != this.index) {
+      prev -= 1;
+      id = "keywords" + prev;
+      document.getElementById(id).className = "btn keywords-list";
+      Session.set('keyword', IDEAS_MAP[this.value]);
+      id = "keywords" + this.index;
+      document.getElementById(id).className = "btn2 keywords-list";
+      drawNodes();
+    }
   }
 });

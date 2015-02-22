@@ -16,17 +16,15 @@ Template.survey.helpers({
     return Session.get(ERRORS_KEY)[key] && 'error';
   },
   questions: function() {
-    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/4));
+    Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/3));
     Session.setDefault('downvotes', Math.floor(Session.get('upvotes')/2));
     return shuffle(Object.keys(IDEAS));
   },  
   upLeft: function() {
-    if (Object.keys(IDEAS).length/4 == 0) return;  
-    return Math.floor(Object.keys(IDEAS).length/4) - Session.get('upvoted').length;
+    return Math.floor(Object.keys(IDEAS).length/3) - Session.get('upvoted').length;
   },
   downLeft: function() {
-     if (Object.keys(IDEAS).length/8 == 0) return;   
-    return Math.floor(Object.keys(IDEAS).length/8) - Session.get('downvoted').length
+    return Math.floor(Object.keys(IDEAS).length/6) - Session.get('downvoted').length;
   },
 });
 
@@ -38,16 +36,18 @@ Template.survey.events({
       //error
     }
     var userVotes = [];
-    for(var v in Session.get('upvoted')) {
+    var upvoted = Session.get('upvoted');
+    for(var i = 0; i < upvoted.length; i++) {
       userVotes.push(Vote.insert({
-        idea: v,
+        idea: upvoted[i],
         sentiment: 1
       }));
     }
 
-    for(var v in Session.get('downvoted')) {
+    var downvoted = Session.get('downvoted');
+    for(var i = 0; i < downvoted.length; i++) {
       userVotes.push(Vote.insert({
-        idea: v,
+        idea: downvoted[i],
         sentiment: 0
       }));
     }

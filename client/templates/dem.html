@@ -20,12 +20,22 @@
             </div>
 
             <div class="input-symbol {{errorClass 'language'}}">
-              <input type="text" name="language" placeholder="Home Language" />
+             
+             <select name="language">
+             <option selected="true" disabled="true" >Language</option>
+               <option>  Arabic </option>
+               <option> Hebrew</option>
+             </select>
               <span class="icon-language" title="Your First Language"></span>
             </div>
 
             <div class="input-symbol  {{errorClass 'gender'}}">
-              <input type="text" name="gender" placeholder="Gender" />
+             <select name="gender">
+             <option selected="true" disabled="true" >Gender</option>
+               <option>  Male </option>
+               <option> Female</option>
+                <option> Not disclosed</option>
+             </select>
               <span class="icon-person-outline" title="Gender"></span>
             </div>
         </div>
@@ -37,6 +47,9 @@
 
       </div>
     </div>
+    <footer class = "footer">
+      <b> POWERED BY </b> &nbsp;  <img src = "/demo21.png"> 
+    </footer>
   </div>
 
 </template>
