@@ -61,7 +61,7 @@ Template.survey.events({
     Router.go('end');
   },
   'click #reset-button': function(event, template) {
-    for(var i = 0; i < Object.keys(IDEAS); i++) {
+    for(var i = 0; i < Object.keys(IDEAS).length; i++) {
       var id = "list" + i;
       document.getElementById(id).className = "list-item";
     }
