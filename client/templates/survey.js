@@ -18,7 +18,11 @@ Template.survey.helpers({
   questions: function() {
     Session.setDefault('upvotes', Math.floor(Object.keys(IDEAS).length/3));
     Session.setDefault('downvotes', Math.floor(Session.get('upvotes')/2));
-    return shuffle(Object.keys(IDEAS));
+    var obj = _.map(Object.keys(IDEAS), function(value, index){
+        return {value: value, index: index};
+    });
+    
+    return shuffle(obj);
   },  
   upLeft: function() {
     return Math.floor(Object.keys(IDEAS).length/3) - Session.get('upvoted').length;
