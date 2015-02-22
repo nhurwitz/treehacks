@@ -14,6 +14,7 @@ Template.question.events({
     var str = this.toString();
     var voted = Session.get('voted');
     var upvoted = Session.get('upvoted');
+    console.log(this);
 
     if(voted.indexOf(str) == -1) {
       voted.push(str);

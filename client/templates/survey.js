@@ -21,9 +21,11 @@ Template.survey.helpers({
     return shuffle(Object.keys(IDEAS));
   },  
   upLeft: function() {
+    if (Object.keys(IDEAS).length/4 == 0) return;  
     return Math.floor(Object.keys(IDEAS).length/4) - Session.get('upvoted').length;
   },
   downLeft: function() {
+     if (Object.keys(IDEAS).length/8 == 0) return;   
     return Math.floor(Object.keys(IDEAS).length/8) - Session.get('downvoted').length
   },
 });
