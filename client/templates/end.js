@@ -1,5 +1,7 @@
 Session.setDefault('filter', 'none');
 Session.setDefault('compare', 'none');
+Session.setDefault('keyword', 0);
+
 var drawNodes;
 var compareSet = [];
 var users = []; 
@@ -18,6 +20,7 @@ Template.end.rendered = function() {
       for(var j = 0; j < l2; j++) {
         var queriedVote = Vote.find({_id:Voter.find({}).fetch()[i].votes[j]}).fetch()[0];
         var idea = queriedVote.idea;
+        console.log(idea);
         var sentiment = queriedVote.sentiment;
 
         var idea_val = IDEAS_MAP[idea] * (sentiment == 0 ? -1 : 1);
@@ -77,7 +80,7 @@ Template.end.rendered = function() {
           case 'age': return color(d.age);
           case 'gender': return color(wordNumber(d.gender));
           case 'language': return color(wordNumber(d.language));
-          default: return color(d.age); 
+          default: return 'black'; 
         } 
         
       });
@@ -179,5 +182,21 @@ Template.end.events({
     Session.set('compare', 'netanyahu');
     document.getElementById("bibi-button").className = "btn btn-default";
     document.getElementById("abbas-button").className = "btn btn-primary active";
+  },
+  'click #reset-button': function(event, template) {
+    Session.set('compare', 'none');
+    Session.set('filter', 'none');
+    Session.set('keyword', 0)
+
+    document.getElementById("bibi-button").className = "btn btn-default";
+    document.getElementById("abbas-button").className = "btn btn-default";
+    document.getElementById("age-button").className = "btn btn-default";
+    document.getElementById("gender-button").className = "btn btn-default";
+    document.getElementById("language-button").className = "btn btn-default";
+    drawNodes();
+  },
+  'click #keywords-list': function(event, template) {
+    console.log(IDEAS_MAP[this.toString()])
+    Session.set('keyword', IDEAS_MAP[this.toString()]);
   }
 });
