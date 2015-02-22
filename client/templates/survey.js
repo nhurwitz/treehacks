@@ -50,8 +50,6 @@ Template.survey.events({
     Router.go('end');
   },
   'reset': function(event, template) {
-    Session.set('upvotes', Math.floor(Object.keys(IDEAS).length/4));
-    Session.set('downvotes', Math.floor(Session.get('upvotes')/2));
     Session.set('voted', []);
     Session.set('upvoted', []);
     Session.set('downvoted', []);
