@@ -5,7 +5,7 @@
         Voting
       </div>
       <div class = "explain">
-        Choose the <b>two</b> statements you <i>agree</i> with the most, and the <b>one</b> statement you disagree with the most.
+        Choose the two statements you <span id="explain-agree">agree</span> with the most and the one statement you <span id="explain-disagree">disagree</span>  with the most.
       </div>
       <div class = "surroundform">
         <div class = "form-text">
@@ -20,9 +20,9 @@
         <button type="reset" id="reset-button" class="btn btn-primary" >Reset</button> &nbsp;
         <button type="submit" id="submit-button" class="btn btn-primary" >Submit</button>
       </div>
-        <div class = "counters">
-      Upvotes Remaining: {{upLeft}} <br> Downvotes Remaining: {{downLeft}} 
-    </div>
+      <div class = "counters">
+        Upvotes Remaining: {{upLeft}} <br> Downvotes Remaining: {{downLeft}} 
+      </div>
     </div>
   </div>
 </template>

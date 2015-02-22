@@ -126,6 +126,7 @@ background: -webkit-linear-gradient(90deg, #232526 10%, #414345 90%); /* Chrome 
   }
 
   .counters {
+    .position(absolute, 500px, 250px, auto, auto);
     float: right;
     color: white;
     font-size: 32px;
@@ -143,14 +144,27 @@ background: -webkit-linear-gradient(90deg, #232526 10%, #414345 90%); /* Chrome 
 
 
   .explain{
+    .position(absolute, 250px, auto, auto, 100px); 
+    text-align: center;
     color: white;
-    padding-left: 30px;
-    font-size: 14px;
+    /*padding-left: 30px;*/
+    font-size: 27px;
     font-weight: bold;
-    font-family: 'Open Sans' ;
-    width: 300px;
+    font-family: 'Amatic SC' ;
+    letter-spacing: 2px;
+    width: 290px;
 /*    padding-bottom: 10px;*/
-    float: left;
+    /*float: left;*/
+    text-align: justify;
+    text-justify: auto;
+
+    #explain-agree{
+      color: #00A352;
+    }
+
+    #explain-disagree{
+      color: #FF4747;
+    }
   }  
 
   .actual-question {
@@ -192,92 +206,3 @@ background: -webkit-linear-gradient(90deg, #232526 10%, #414345 90%); /* Chrome 
     color: #eba3cd;
   }
 
-
-
-  
-
-
-
-
-
-
-/*
-
-@menu-width: 270px;
-@column: 5.55555%;
-
-body {
-  .position(absolute, 0, 0, 0, 0);
-
-  .background-image( linear-gradient(top, #FFFFFF, #FFFFFF 100%) );
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-#container {
-  .position(absolute, 0, 0, 0, 0);
-
-  @media screen and (min-width: 60em) {
-    left: @column;
-    right: @column;
-  }
-
-  @media screen and (min-width: 80em) {
-    left: 2*@column;
-    right: 2*@column;
-  }
-
-  // Hide anything offscreen
-  overflow: hidden;
-}
-
-#menu {
-  .position(absolute, 0, 0, 0, 0, @menu-width);
-}
-
-#content-container {
-  .position(absolute, 0, 0, 0, 0);
-  .transition(all 200ms ease-out);
-  .transform(translate3d(0, 0, 0));
-  background: @color-tertiary;
-  opacity: 1;
-
-  @media screen and (min-width: 40em) {
-//    left: @menu-width;
-  }
-
-  .content-scrollable {
-    .position(absolute, 0, 0, 0, 0);
-    .transform(translate3d(0, 0, 0));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  // Toggle menu on mobile
-  .menu-open & {
-    .transform(translate3d(@menu-width, 0, 0));
-    opacity: .85;
-    left: 0;
-
-    @media screen and (min-width: 40em) {
-      // Show menu on desktop, negate .menu-open
-      .transform(translate3d(0, 0, 0)); //reset transform and use position properties instead
-      opacity: 1;
-      left: @menu-width;
-    }
-  }
-}
-
-// Transparent screen to prevent interactions on content when menu is open
-.content-overlay {
-  .position(absolute, 0, 0, 0, 0);
-  cursor: pointer;
-
-  .menu-open & {
-    .transform(translate3d(@menu-width, 0, 0));
-    z-index: 1;
-  }
-
-  // Hide overlay on desktop
-  @media screen and (min-width: 40em) { display: none; }
-}*/
