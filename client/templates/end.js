@@ -71,7 +71,7 @@ Template.end.rendered = function() {
     node.style("fill", function(d, i) {
         switch(Session.get('filter')) {
           case 'age': return color(d.age);
-          case 'gender': return color(wordNumber(d.gender));
+          case 'gender': return d.gender == 'nd' ? 'black' : color(wordNumber(d.gender));
           case 'language': return color(wordNumber(d.language));
           default: return color(d.age); 
         } 
